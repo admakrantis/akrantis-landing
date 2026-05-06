@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard ESG — Akrantis</title>
+<style>
+/* ─── Design tokens — light ───────────────────────────────────────── */
+:root {
+  --bg:   #f8fafc;
+  --bg2:  #ffffff;
+  --bg3:  #f1f5f9;
+  --bg4:  #e2e8f0;
+  --border:  #e2e8f0;
+  --border2: #cbd5e1;
+  --text:  #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --accent:       #166534;
+  --accent-bg:    #f0fdf4;
+  --accent-bd:    #bbf7d0;
+  --green:      #639922;
+  --green-bg:   #EAF3DE;
+  --green-bd:   #bbf7d0;
+  --green-mid:  #16a34a;
+  --green-text: #3B6D11;
+  --amber:      #EF9F27;
+  --amb-bg:     #FAEEDA;
+  --amb-bd:     #fde68a;
+  --amber-bg:   #FAEEDA;
+  --amber-text: #854F0B;
+  --red:      #E24B4A;
+  --red-bg:   #FCEBEB;
+  --red-bd:   #fecaca;
+  --red-text: #A32D2D;
+  --blue:      #378ADD;
+  --blue-bg:   #E6F1FB;
+  --blue-bd:   #bfdbfe;
+  --blue-text: #185FA5;
+  --text-xs: 10px; --text-sm: 11px; --text-base: 12px;
+  --text-md: 13px; --text-lg: 15px; --text-xl: 18px; --text-display: 22px;
+  --r: 4px; --r2: 6px; --r3: 8px;
+  --shadow: none;
+  --shadow-elevated: 0 4px 16px rgba(15,23,42,.08), 0 1px 3px rgba(15,23,42,.06);
+  --transition: 120ms ease;
+  --sb-w: 228px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow-x: hidden; }
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text);
+  font-size: var(--text-base); line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button { cursor: pointer; font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── Shell ───────────────────────────────────── */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ─── Sidebar ─────────────────────────────────── */
+.sb {
+  width: var(--sb-w); min-width: var(--sb-w);
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
+}
+.sb-top { padding: 16px 14px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sb-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.sb-mark {
+  width: 26px; height: 26px; background: var(--text); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sb-mark span { color: var(--bg2); font-size: 9px; font-weight: 600; font-family: 'Geist Mono', monospace; letter-spacing: -.3px; }
+.sb-name { font-size: var(--text-md); font-weight: 600; color: var(--text); letter-spacing: -.4px; }
+.sb-tagline { font-size: 9.5px; color: var(--text3); letter-spacing: .04em; text-transform: uppercase; margin-top: 2px; }
+.sb-ctx {
+  display: flex; align-items: center; gap: 7px; padding: 7px 9px;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r2); cursor: default;
+}
+.ctx-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--green-mid); }
+.sb-ctx-info { flex: 1; min-width: 0; }
+.sb-ctx-name { font-size: 11.5px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-ctx-sub  { font-size: 10px; color: var(--text3); font-family: 'Geist Mono', monospace; }
+.sb-nav { flex: 1; padding: 8px 16px 4px; overflow-y: auto; }
+.sb-nav::-webkit-scrollbar { width: 2px; }
+.sb-nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.nav-sec { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); padding: 10px 0 3px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 6.5px 8px; border: none; background: none; border-radius: 0;
+  font-size: 12px; color: var(--text2); text-align: left;
+  transition: background var(--transition), color var(--transition);
+}
+.nav-btn:hover { background: var(--bg3); color: var(--text); }
+.nav-btn.on    { background: var(--bg3); color: var(--text); font-weight: 500; }
+.nav-ico {
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; opacity: .5; color: var(--text2); font-size: 13px;
+}
+.nav-btn.on .nav-ico { opacity: 1; color: var(--text); }
+.nav-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-badge {
+  margin-left: auto; font-size: 10px; font-weight: 600; padding: 1px 5px;
+  border-radius: 9px; line-height: 1.5; flex-shrink: 0;
+}
+.nav-badge.r { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-bd); }
+.nav-div { height: 1px; background: var(--border); margin: 5px 6px; }
+.sb-foot {
+  padding: 11px 14px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+}
+.sb-av {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--bg4);
+  border: 1px solid var(--border2); display: flex; align-items: center;
+  justify-content: center; font-size: 10px; font-weight: 600; color: var(--text2); flex-shrink: 0;
+}
+.sb-fn { font-size: 11.5px; font-weight: 500; color: var(--text); }
+.sb-fr { font-size: 10px; color: var(--text3); }
+.theme-toggle {
+  margin-left: auto; width: 28px; height: 28px; border-radius: var(--r2);
+  border: 1px solid var(--border); background: none;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text3); cursor: pointer;
+}
+
+/* ─── Main ────────────────────────────────────── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.topbar {
+  height: 50px; min-height: 50px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 14px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; letter-spacing: -.02em; }
+.topbar-acts  { display: flex; gap: 8px; align-items: center; }
+.page-wrap { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.pg { padding: 22px 24px 48px; }
+
+/* ─── Atoms ───────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500; padding: 2px 8px;
+  border-radius: 20px; white-space: nowrap; border: 1px solid;
+}
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge.ok   { background: var(--green-bg); color: var(--green);  border-color: var(--green-bd); }
+.badge.ok::before   { background: var(--green-mid); }
+.badge.warn { background: var(--amb-bg);  color: var(--amber);  border-color: var(--amb-bd); }
+.badge.warn::before { background: #d97706; }
+.badge.err  { background: var(--red-bg);  color: var(--red);    border-color: var(--red-bd); }
+.badge.err::before  { background: var(--red); }
+.badge.blue { background: var(--blue-bg); color: var(--blue);   border-color: var(--blue-bd); }
+.badge.blue::before { background: var(--blue); }
+.badge.neu  { background: var(--bg3);     color: var(--text2);  border-color: var(--border); }
+.badge.neu::before  { background: var(--text3); }
+.badge.nd::before   { display: none; }
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 32px; padding: 0 12px; border-radius: var(--r2);
+  font-size: 12.5px; font-weight: 500; border: none;
+  transition: all var(--transition); white-space: nowrap; cursor: pointer; font-family: inherit;
+}
+.btn-sm { height: 28px; padding: 0 9px; font-size: 11.5px; }
+.btn-p { background: var(--text); color: var(--bg2); }
+.btn-p:hover { opacity: .85; }
+.btn-s { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+.btn-s:hover { background: var(--bg4); color: var(--text); border-color: var(--border2); }
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r3); padding: 16px; margin-bottom: 14px;
+}
+.card-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title {
+  font-size: var(--text-xs); font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--text3);
+}
+.sc {
+  background: var(--bg); border: 0.5px solid var(--border);
+  border-radius: var(--r2); padding: 14px 16px;
+  cursor: pointer; transition: border-color var(--transition);
+}
+.sc:hover { border-color: var(--border2); }
+.tw  { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; }
+.tws { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 480px; }
+thead th {
+  font-size: 10.5px; font-weight: 600; color: var(--text3);
+  padding: 9px 14px; background: var(--bg3); border-bottom: 1px solid var(--border);
+  text-align: left; letter-spacing: .03em; white-space: nowrap;
+}
+tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text2); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { cursor: pointer; transition: background var(--transition); }
+tbody tr:hover td { background: var(--bg3); }
+.tn { font-weight: 500; color: var(--text); }
+.tm { font-family: 'Geist Mono', monospace; font-size: 11.5px; color: var(--text3); }
+.alert {
+  position: relative; padding: 11px 14px 11px 28px; border-radius: var(--r2); font-size: 12px;
+  line-height: 1.55; margin-bottom: 14px; background: var(--bg2); border: 0.5px solid var(--border);
+  border-left-width: 2px; color: var(--text2);
+}
+.alert::before {
+  content: ''; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.alert.r { border-left-color: var(--red); }
+.alert.r::before { background: var(--red); }
+.alert strong { display: block; font-weight: 600; margin-bottom: 2px; color: var(--text); }
+.sbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.sbar-lbl { font-size: 11.5px; color: var(--text3); width: 130px; flex-shrink: 0; }
+.sbar-t { flex: 1; height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+.sbar-f { height: 100%; border-radius: 2px; }
+.sbar-f.h { background: var(--green-mid); }
+.sbar-f.m { background: #d97706; }
+.sbar-f.l { background: var(--red); }
+.sbar-pct { font-size: 11px; font-weight: 600; font-family: 'Geist Mono', monospace; width: 32px; text-align: right; flex-shrink: 0; }
+.sbar-pct.h { color: var(--green); }
+.sbar-pct.m { color: var(--amber); }
+.sbar-pct.l { color: var(--red); }
+.cov-row { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+.cov-l { font-size: 12.5px; color: var(--text2); width: 155px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cov-t { flex: 1; height: 4px; background: var(--bg4); border-radius: 3px; overflow: hidden; }
+.cov-f { height: 100%; border-radius: 3px; }
+.cov-f.h { background: var(--green-mid); }
+.cov-f.m { background: #d97706; }
+.cov-f.l { background: var(--red); }
+.cov-p { font-size: 11px; font-weight: 600; font-family: 'Geist Mono', monospace; width: 32px; text-align: right; color: var(--text3); flex-shrink: 0; }
+/* period filter */
+.pf-wrap { display: flex; align-items: center; gap: 4px; }
+.pf-btn {
+  height: 28px; padding: 0 11px; border-radius: var(--r);
+  font-size: 11.5px; font-weight: 500; border: 1px solid var(--border);
+  background: var(--bg2); color: var(--text2); cursor: pointer;
+  transition: all var(--transition);
+}
+.pf-btn:hover { background: var(--bg3); }
+.pf-btn.on { background: var(--text); color: var(--bg2); border-color: var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <div class="sb-mark"><span>AK</span></div>
+        <div>
+          <div class="sb-name">Akrantis</div>
+          <div class="sb-tagline">Rastreabilidade para resíduos</div>
+        </div>
+      </div>
+      <div class="sb-ctx">
+        <span class="ctx-dot"></span>
+        <div class="sb-ctx-info">
+          <div class="sb-ctx-name">Grupo Industrial Akrantis</div>
+          <div class="sb-ctx-sub">Empresa</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">Situação Atual</div>
+      <button class="nav-btn on">
+        <span class="nav-ico">⊞</span>
+        <span class="nav-label">Visão Geral</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">⚠</span>
+        <span class="nav-label">Pendências</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">⚑</span>
+        <span class="nav-label">Pendentes Fiscais</span>
+      </button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Entidades</div>
+      <button class="nav-btn">
+        <span class="nav-ico">⌂</span>
+        <span class="nav-label">Unidades</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">◎</span>
+        <span class="nav-label">Parceiros</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">📄</span>
+        <span class="nav-label">Licenças</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">✓</span>
+        <span class="nav-label">Compliance</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">≡</span>
+        <span class="nav-label">Relatórios Obrigatórios</span>
+      </button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Operação</div>
+      <button class="nav-btn">
+        <span class="nav-ico">▣</span>
+        <span class="nav-label">Fluxo de Lotes</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">⊕</span>
+        <span class="nav-label">Ingestão</span>
+      </button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Saídas</div>
+      <button class="nav-btn">
+        <span class="nav-ico">✦</span>
+        <span class="nav-label">Certificados</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico">↗</span>
+        <span class="nav-label">Exportações</span>
+      </button>
+      <div class="nav-div"></div>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-av">MA</div>
+      <div style="flex:1;min-width:0;">
+        <div class="sb-fn">Marcos Almeida</div>
+        <div class="sb-fr">Admin</div>
+      </div>
+      <button class="theme-toggle" title="Tema">☀</button>
+      <button class="theme-toggle" title="Sair" style="margin-left:0;">⎋</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard ESG</div>
+      <div class="topbar-acts">
+        <!-- FiltroPeriodo -->
+        <div class="pf-wrap">
+          <button class="pf-btn">7d</button>
+          <button class="pf-btn on">30d</button>
+          <button class="pf-btn">90d</button>
+          <button class="pf-btn">Período</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-wrap">
+      <div class="pg">
+
+        <!-- AlertasCriticos -->
+        <div class="card" style="margin-bottom:14px;padding:16px 18px;">
+          <div class="card-hd" style="margin-bottom:10px;">
+            <div class="card-title">Alertas críticos</div>
+            <div style="display:flex;align-items:center;gap:6;">
+              <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);">2 críticos</span>
+              <span style="font-size:10px;font-family:'Geist Mono',monospace;color:var(--text3);font-weight:600;">4 total</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <!-- Alerta 1 CRÍTICO -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:8px;border-left:3px solid var(--red);">
+              <span style="font-size:12px;color:var(--red);flex-shrink:0;">⚠</span>
+              <span style="font-size:12.5px;color:var(--text2);flex:1;">Licença LO-2024-441 vencida</span>
+              <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;color:var(--red);border:1px solid var(--red-bd);letter-spacing:.04em;flex-shrink:0;">CRÍTICO</span>
+              <button class="btn btn-s btn-sm" style="flex-shrink:0;">Ver →</button>
+            </div>
+            <!-- Alerta 2 CRÍTICO -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:8px;border-left:3px solid var(--red);">
+              <span style="font-size:12px;color:var(--red);flex-shrink:0;">⚠</span>
+              <span style="font-size:12.5px;color:var(--text2);flex:1;">Licença LP-2023-118 vencida</span>
+              <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;color:var(--red);border:1px solid var(--red-bd);letter-spacing:.04em;flex-shrink:0;">CRÍTICO</span>
+              <button class="btn btn-s btn-sm" style="flex-shrink:0;">Ver →</button>
+            </div>
+            <!-- Alerta 3 ATENÇÃO -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--amb-bg);border:1px solid var(--amb-bd);border-radius:8px;border-left:3px solid var(--amber);">
+              <span style="font-size:12px;color:var(--amber);flex-shrink:0;">◆</span>
+              <span style="font-size:12.5px;color:var(--text2);flex:1;">Transportadora Vidal Ltda com aptidão irregular</span>
+              <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;color:var(--amber);border:1px solid var(--amb-bd);letter-spacing:.04em;flex-shrink:0;">ATENÇÃO</span>
+              <button class="btn btn-s btn-sm" style="flex-shrink:0;">Ver →</button>
+            </div>
+            <!-- Alerta 4 ATENÇÃO -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--amb-bg);border:1px solid var(--amb-bd);border-radius:8px;border-left:3px solid var(--amber);">
+              <span style="font-size:12px;color:var(--amber);flex-shrink:0;">⚠</span>
+              <span style="font-size:12.5px;color:var(--text2);flex:1;">Licença LI-2025-077 vencendo em até 30 dias</span>
+              <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;color:var(--amber);border:1px solid var(--amb-bd);letter-spacing:.04em;flex-shrink:0;">ATENÇÃO</span>
+              <button class="btn btn-s btn-sm" style="flex-shrink:0;">Ver →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KpiCards — 3 colunas com inline styles exatos -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;">
+
+          <!-- Card 1: Conformidade -->
+          <div class="sc" style="padding:18px 20px;">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:6px;">Conformidade Documental</div>
+            <div style="font-size:28px;font-weight:700;line-height:1;color:#b91c1c;margin-bottom:8px;">
+              0<span style="font-size:14px;font-weight:400;color:var(--text3);">%</span>
+            </div>
+            <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:6px;">
+              <div style="height:100%;width:0%;background:#b91c1c;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:11px;color:var(--text3);">0 de 2 lotes com ciclo completo</div>
+          </div>
+
+          <!-- Card 2: Volume -->
+          <div class="sc" style="padding:18px 20px;">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:6px;">Vol. Certificado (CDF)</div>
+            <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:5px;">
+              <span style="font-size:28px;font-weight:700;line-height:1;color:var(--blue);">200</span>
+              <span style="font-size:13px;color:var(--text3);">t</span>
+            </div>
+            <div style="font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;margin-bottom:3px;">Reciclagem: 143t · Outros: 57t</div>
+            <div style="font-size:10px;font-weight:600;color:#15803d;font-family:'Geist Mono',monospace;">↑ +24t vs anterior</div>
+          </div>
+
+          <!-- Card 3: Lotes em aberto -->
+          <div class="sc" style="padding:18px 20px;">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:6px;">Lotes em aberto</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <span style="font-size:28px;font-weight:700;line-height:1;color:#b91c1c;">2</span>
+              <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:rgba(185,28,28,.10);color:#b91c1c;letter-spacing:.04em;">RISCO</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;">├─</span>
+                <span style="font-weight:700;font-size:12px;font-family:'Geist Mono',monospace;color:var(--text3);min-width:16px;">0</span>
+                <span style="font-size:11px;color:var(--text3);">aguardando documentação</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;">└─</span>
+                <span style="font-weight:700;font-size:12px;font-family:'Geist Mono',monospace;color:#b91c1c;min-width:16px;">2</span>
+                <span style="font-size:11px;color:#b91c1c;">sem CDF — risco</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CoberturaDocumental -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-hd" style="margin-bottom:14px;">
+            <div class="card-title">Cobertura Documental</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <!-- Unidades -->
+            <div>
+              <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:10px;">Licenças por Unidade</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <!-- Unidade 1 -->
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;">Guarulhos</div>
+                  <div style="flex:1;min-width:60px;height:4px;background:rgba(185,28,28,.12);border-radius:2px;overflow:hidden;"><div style="height:100%;width:0%;background:#b91c1c;border-radius:2px;"></div></div>
+                  <div style="font-size:11px;font-weight:600;color:#b91c1c;flex-shrink:0;font-family:'Geist Mono',monospace;white-space:nowrap;">0%<span style="font-weight:400;color:var(--text3);font-size:10px;margin-left:3px;">(0/1)</span></div>
+                  <div style="width:70px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(185,28,28,.12);color:#b91c1c;letter-spacing:.04em;">1 vencida</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+                <!-- Unidade 2 -->
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;">Campinas</div>
+                  <div style="flex:1;min-width:60px;height:4px;background:rgba(185,28,28,.12);border-radius:2px;overflow:hidden;"><div style="height:100%;width:0%;background:#b91c1c;border-radius:2px;"></div></div>
+                  <div style="font-size:11px;font-weight:600;color:#b91c1c;flex-shrink:0;font-family:'Geist Mono',monospace;white-space:nowrap;">0%<span style="font-weight:400;color:var(--text3);font-size:10px;margin-left:3px;">(0/1)</span></div>
+                  <div style="width:70px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(185,28,28,.12);color:#b91c1c;letter-spacing:.04em;">1 vencida</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+                <!-- Unidade 3 -->
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;">São Bernardo</div>
+                  <div style="flex:1;min-width:60px;height:4px;background:rgba(217,119,6,.12);border-radius:2px;overflow:hidden;"><div style="height:100%;width:100%;background:#d97706;border-radius:2px;"></div></div>
+                  <div style="font-size:11px;font-weight:600;color:#d97706;flex-shrink:0;font-family:'Geist Mono',monospace;white-space:nowrap;">100%<span style="font-weight:400;color:var(--text3);font-size:10px;margin-left:3px;">(1/1)</span></div>
+                  <div style="width:70px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(217,119,6,.12);color:#d97706;letter-spacing:.04em;">1 vencendo</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+                <!-- Unidade 4 -->
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;">Santo André</div>
+                  <div style="flex:1;min-width:60px;height:4px;background:rgba(21,128,61,.12);border-radius:2px;overflow:hidden;"><div style="height:100%;width:100%;background:#15803d;border-radius:2px;"></div></div>
+                  <div style="font-size:11px;font-weight:600;color:#15803d;flex-shrink:0;font-family:'Geist Mono',monospace;white-space:nowrap;">100%<span style="font-weight:400;color:var(--text3);font-size:10px;margin-left:3px;">(2/2)</span></div>
+                  <div style="width:70px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(21,128,61,.12);color:#15803d;letter-spacing:.04em;">OK</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+              </div>
+            </div>
+            <!-- Parceiros -->
+            <div>
+              <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:10px;">Licenças de Parceiros</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);flex:1;min-width:0;">Transportadores</div>
+                  <div style="font-size:11px;color:var(--text2);font-family:'Geist Mono',monospace;flex-shrink:0;">3 parceiros</div>
+                  <div style="width:72px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(185,28,28,.12);color:#b91c1c;letter-spacing:.04em;">1 vencida</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r);background:var(--bg2);cursor:pointer;">
+                  <div style="font-size:12px;font-weight:500;color:var(--text);flex:1;min-width:0;">Destinadores</div>
+                  <div style="font-size:11px;color:var(--text2);font-family:'Geist Mono',monospace;flex-shrink:0;">2 parceiros</div>
+                  <div style="width:72px;text-align:right;flex-shrink:0;"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;background:rgba(21,128,61,.12);color:#15803d;letter-spacing:.04em;">OK</span></div>
+                  <span style="font-size:11px;color:var(--text3);flex-shrink:0;">→</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TabelaLotesCriticos -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-hd">
+            <div class="card-title">Lotes sem CDF</div>
+            <span style="font-size:10px;font-family:'Geist Mono',monospace;color:var(--text3);">sem CDF vinculado</span>
+          </div>
+          <div class="tws">
+            <table>
+              <thead>
+                <tr>
+                  <th>Lote</th>
+                  <th>Resíduo</th>
+                  <th>Dias em aberto</th>
+                  <th>Status</th>
+                  <th style="width:60px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tm">L-2026-0006</span></td>
+                  <td><span class="tn" style="font-size:12px;">Óleo Lubrificante Usado</span></td>
+                  <td><span style="font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;color:var(--red);">8d</span></td>
+                  <td><span class="badge err nd">Em Transporte</span></td>
+                  <td><button class="btn btn-s btn-sm">Ver</button></td>
+                </tr>
+                <tr>
+                  <td><span class="tm">L-2026-0005</span></td>
+                  <td><span class="tn" style="font-size:12px;">Óleo Industrial Contaminado</span></td>
+                  <td><span style="font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;color:var(--red);">11d</span></td>
+                  <td><span class="badge warn nd">Aguardando CDF</span></td>
+                  <td><button class="btn btn-s btn-sm">Ver</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TabelaLicencasVencendo -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-hd">
+            <div class="card-title">Licenças críticas</div>
+            <button class="btn btn-s btn-sm">Ver todas</button>
+          </div>
+          <div class="tws">
+            <table>
+              <thead>
+                <tr>
+                  <th>Número</th>
+                  <th>Tipo</th>
+                  <th>Órgão</th>
+                  <th>Titular</th>
+                  <th>Vencimento</th>
+                  <th>Status</th>
+                  <th>Restam</th>
+                  <th style="width:60px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tm">LO-2024-441</span></td>
+                  <td><span style="font-size:12px;color:var(--text2);">Licença de Operação</span></td>
+                  <td><span style="font-size:11.5px;color:var(--text3);">CETESB</span></td>
+                  <td><span class="tn" style="font-size:12px;">Guarulhos</span></td>
+                  <td><span style="font-size:11.5px;font-family:'Geist Mono',monospace;color:var(--text3);">24/04/2026</span></td>
+                  <td><span style="display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);letter-spacing:.04em;white-space:nowrap;">VENCIDA</span></td>
+                  <td><span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);white-space:nowrap;">Vencida</span></td>
+                  <td><button class="btn btn-s btn-sm">Ver</button></td>
+                </tr>
+                <tr>
+                  <td><span class="tm">LP-2023-118</span></td>
+                  <td><span style="font-size:12px;color:var(--text2);">Licença Prévia</span></td>
+                  <td><span style="font-size:11.5px;color:var(--text3);">CETESB</span></td>
+                  <td><span class="tn" style="font-size:12px;">Campinas</span></td>
+                  <td><span style="font-size:11.5px;font-family:'Geist Mono',monospace;color:var(--text3);">02/05/2026</span></td>
+                  <td><span style="display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);letter-spacing:.04em;white-space:nowrap;">VENCIDA</span></td>
+                  <td><span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);white-space:nowrap;">Vencida</span></td>
+                  <td><button class="btn btn-s btn-sm">Ver</button></td>
+                </tr>
+                <tr>
+                  <td><span class="tm">LI-2025-077</span></td>
+                  <td><span style="font-size:12px;color:var(--text2);">Licença de Instalação</span></td>
+                  <td><span style="font-size:11.5px;color:var(--text3);">CETESB</span></td>
+                  <td><span class="tn" style="font-size:12px;">São Bernardo</span></td>
+                  <td><span style="font-size:11.5px;font-family:'Geist Mono',monospace;color:var(--text3);">20/05/2026</span></td>
+                  <td><span style="display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:var(--amb-bg);color:var(--amber);border:1px solid var(--amb-bd);letter-spacing:.04em;white-space:nowrap;">VENCENDO</span></td>
+                  <td><span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;background:var(--amb-bg);color:var(--amber);border:1px solid var(--amb-bd);white-space:nowrap;">14d</span></td>
+                  <td><button class="btn btn-s btn-sm">Ver</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

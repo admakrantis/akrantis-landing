@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance — Akrantis</title>
+<style>
+:root {
+  --bg:#f8fafc;--bg2:#ffffff;--bg3:#f1f5f9;--bg4:#e2e8f0;
+  --border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --green:#639922;--green-bg:#EAF3DE;--green-bd:#bbf7d0;--green-mid:#16a34a;--green-text:#3B6D11;
+  --amber:#EF9F27;--amb-bg:#FAEEDA;--amb-bd:#fde68a;--amber-text:#854F0B;
+  --red:#E24B4A;--red-bg:#FCEBEB;--red-bd:#fecaca;--red-text:#A32D2D;
+  --blue:#378ADD;--blue-bg:#E6F1FB;--blue-bd:#bfdbfe;--blue-text:#185FA5;
+  --text-xs:10px;--text-sm:11px;--text-base:12px;--text-md:13px;
+  --r:4px;--r2:6px;--r3:8px;
+  --shadow:none;--shadow-elevated:0 4px 16px rgba(15,23,42,.08),0 1px 3px rgba(15,23,42,.06);
+  --transition:120ms ease;--sb-w:228px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:var(--text-base);line-height:1.5;-webkit-font-smoothing:antialiased;}
+button{cursor:pointer;font-family:inherit;}
+a{color:inherit;text-decoration:none;}
+
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* Sidebar */
+.sb{width:var(--sb-w);min-width:var(--sb-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
+.sb-top{padding:16px 14px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-brand{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.sb-mark{width:26px;height:26px;background:var(--text);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-mark span{color:var(--bg2);font-size:9px;font-weight:600;font-family:'Geist Mono',monospace;letter-spacing:-.3px;}
+.sb-name{font-size:var(--text-md);font-weight:600;color:var(--text);letter-spacing:-.4px;}
+.sb-tagline{font-size:9.5px;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;margin-top:2px;}
+.sb-ctx{display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);}
+.ctx-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--green-mid);}
+.sb-ctx-info{flex:1;min-width:0;}
+.sb-ctx-name{font-size:11.5px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-ctx-sub{font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;}
+.sb-nav{flex:1;padding:8px 16px 4px;overflow-y:auto;}
+.sb-nav::-webkit-scrollbar{width:2px;}
+.nav-sec{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:10px 0 3px;}
+.nav-btn{display:flex;align-items:center;gap:8px;width:100%;padding:6.5px 8px;border:none;background:none;border-radius:0;font-size:12px;color:var(--text2);text-align:left;transition:background var(--transition),color var(--transition);}
+.nav-btn:hover{background:var(--bg3);color:var(--text);}
+.nav-btn.on{background:var(--bg3);color:var(--text);font-weight:500;}
+.nav-ico{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.5;font-size:13px;}
+.nav-btn.on .nav-ico{opacity:1;}
+.nav-label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-div{height:1px;background:var(--border);margin:5px 6px;}
+.sb-foot{padding:11px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.sb-av{width:28px;height:28px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);flex-shrink:0;}
+.sb-fn{font-size:11.5px;font-weight:500;color:var(--text);}
+.sb-fr{font-size:10px;color:var(--text3);}
+.theme-toggle{margin-left:auto;width:28px;height:28px;border-radius:var(--r2);border:1px solid var(--border);background:none;display:flex;align-items:center;justify-content:center;color:var(--text3);cursor:pointer;}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{height:50px;min-height:50px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:14px;flex-shrink:0;}
+.topbar-title{font-size:14px;font-weight:500;color:var(--text);flex:1;letter-spacing:-.02em;}
+.topbar-acts{display:flex;gap:8px;align-items:center;}
+.page-wrap{flex:1;display:flex;overflow:hidden;}
+
+/* Compliance 2-col layout */
+.comp-sidebar{width:240px;min-width:240px;border-right:1px solid var(--border);overflow-y:auto;background:var(--bg2);flex-shrink:0;}
+.comp-sidebar::-webkit-scrollbar{width:2px;}
+.comp-main{flex:1;overflow-y:auto;background:var(--bg);}
+.comp-main::-webkit-scrollbar{width:3px;}
+.comp-main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* Sidebar section header */
+.lic-sec-hd{padding:12px 14px 4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg3);}
+
+/* License score item */
+.lic-item{display:flex;flex-direction:column;gap:5px;width:100%;padding:8px 12px;background:none;border:none;border-left:3px solid transparent;cursor:pointer;text-align:left;border-radius:0 6px 6px 0;transition:background 0.1s;}
+.lic-item:hover{background:var(--bg3);}
+.lic-item.on{background:var(--bg3);}
+.lic-item-top{display:flex;justify-content:space-between;align-items:center;gap:6px;}
+.lic-num{font-family:'Geist Mono',monospace;font-size:11px;color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lic-score{font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;flex-shrink:0;}
+.lic-meta{font-size:10.5px;color:var(--text3);text-align:left;}
+
+/* Atoms */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;border:1px solid;}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd);}
+.badge.ok::before{background:var(--green-mid);}
+.badge.warn{background:var(--amb-bg);color:var(--amber);border-color:var(--amb-bd);}
+.badge.warn::before{background:#d97706;}
+.badge.err{background:var(--red-bg);color:var(--red);border-color:var(--red-bd);}
+.badge.err::before{background:var(--red);}
+.badge.neu{background:var(--bg3);color:var(--text2);border-color:var(--border);}
+.badge.neu::before{background:var(--text3);}
+.badge.nd::before{display:none;}
+.btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:var(--r2);font-size:12.5px;font-weight:500;border:none;transition:all var(--transition);white-space:nowrap;cursor:pointer;font-family:inherit;}
+.btn-sm{height:28px;padding:0 9px;font-size:11.5px;}
+.btn-p{background:var(--text);color:var(--bg2);}
+.btn-p:hover{opacity:.85;}
+.btn-s{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-s:hover{background:var(--bg4);color:var(--text);border-color:var(--border2);}
+
+/* Compliance main panel */
+.cmp-hd{padding:18px 20px 12px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0;}
+.cmp-hd-info{flex:1;min-width:0;}
+.cmp-title{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.015em;margin-bottom:3px;}
+.cmp-subtitle{font-size:11.5px;color:var(--text3);font-family:'Geist Mono',monospace;}
+
+/* Score bar */
+.score-row{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.score-num{font-size:28px;font-weight:700;color:var(--green);letter-spacing:-.03em;line-height:1;flex-shrink:0;}
+.score-divider{font-size:22px;color:var(--border2);font-weight:300;line-height:1;flex-shrink:0;}
+.score-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:2px;}
+.score-sub{font-size:11px;color:var(--text3);}
+
+/* Filter bar */
+.fbar{display:flex;gap:7px;align-items:center;margin-bottom:0;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.fs{height:32px;padding:0 26px 0 9px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);color:var(--text2);font-size:12.5px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;}
+.fcount{font-size:11px;color:var(--text3);margin-left:auto;font-family:'Geist Mono',monospace;}
+
+/* Collapsible group */
+.cg{border-bottom:1px solid var(--border);}
+.cg-hd{display:flex;align-items:center;gap:8px;padding:10px 20px;cursor:pointer;background:var(--bg2);border:none;width:100%;text-align:left;font-family:inherit;}
+.cg-hd:hover{background:var(--bg3);}
+.cg-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);}
+.cg-label.err{color:var(--red);}
+.cg-count{font-size:11px;font-weight:600;color:var(--text3);}
+.cg-count.err{color:var(--red);}
+.cg-arrow{font-size:9px;color:var(--text3);margin-left:auto;}
+
+/* Condicionante item */
+.cond-item{padding:12px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--transition);}
+.cond-item:hover{background:var(--bg3);}
+.cond-item:last-child{border-bottom:none;}
+.cond-row1{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px;}
+.cond-title{font-size:12.5px;font-weight:500;color:var(--text);flex:1;line-height:1.45;}
+.cond-meta{font-size:11px;color:var(--text3);display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+.cond-ft{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+.cond-prazo{font-size:11px;color:var(--red);font-family:'Geist Mono',monospace;font-weight:600;}
+.cond-prazo.ok{color:var(--green);}
+.cond-prazo.neu{color:var(--text3);}
+
+/* Evidence button */
+.btn-ev{height:26px;padding:0 10px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);border-radius:var(--r);font-size:11px;font-weight:500;cursor:pointer;flex-shrink:0;}
+.btn-ev:hover{background:#dbeafe;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <div class="sb-mark"><span>AK</span></div>
+        <div>
+          <div class="sb-name">Akrantis</div>
+          <div class="sb-tagline">Rastreabilidade para resíduos</div>
+        </div>
+      </div>
+      <div class="sb-ctx">
+        <span class="ctx-dot"></span>
+        <div class="sb-ctx-info">
+          <div class="sb-ctx-name">Grupo Industrial Akrantis</div>
+          <div class="sb-ctx-sub">Empresa</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">Situação Atual</div>
+      <button class="nav-btn"><span class="nav-ico">⊞</span><span class="nav-label">Visão Geral</span></button>
+      <button class="nav-btn"><span class="nav-ico">⚠</span><span class="nav-label">Pendências</span></button>
+      <button class="nav-btn"><span class="nav-ico">⚑</span><span class="nav-label">Pendentes Fiscais</span></button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Entidades</div>
+      <button class="nav-btn"><span class="nav-ico">⌂</span><span class="nav-label">Unidades</span></button>
+      <button class="nav-btn"><span class="nav-ico">◎</span><span class="nav-label">Parceiros</span></button>
+      <button class="nav-btn"><span class="nav-ico">📄</span><span class="nav-label">Licenças</span></button>
+      <button class="nav-btn on"><span class="nav-ico">✓</span><span class="nav-label">Compliance</span></button>
+      <button class="nav-btn"><span class="nav-ico">≡</span><span class="nav-label">Relatórios Obrigatórios</span></button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Operação</div>
+      <button class="nav-btn"><span class="nav-ico">▣</span><span class="nav-label">Fluxo de Lotes</span></button>
+      <button class="nav-btn"><span class="nav-ico">⊕</span><span class="nav-label">Ingestão</span></button>
+      <div class="nav-div"></div>
+      <div class="nav-sec">Saídas</div>
+      <button class="nav-btn"><span class="nav-ico">✦</span><span class="nav-label">Certificados</span></button>
+      <button class="nav-btn"><span class="nav-ico">↗</span><span class="nav-label">Exportações</span></button>
+      <div class="nav-div"></div>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-av">MA</div>
+      <div style="flex:1;min-width:0;"><div class="sb-fn">Marcos Almeida</div><div class="sb-fr">Admin</div></div>
+      <button class="theme-toggle">☀</button>
+      <button class="theme-toggle" style="margin-left:0;">⎋</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Compliance</div>
+      <div class="topbar-acts">
+        <button class="btn btn-s btn-sm">Exportar</button>
+      </div>
+    </div>
+
+    <div class="page-wrap">
+
+      <!-- LEFT: License list sidebar -->
+      <div class="comp-sidebar">
+        <!-- Próprias -->
+        <div class="lic-sec-hd">Grupo Industrial Akrantis</div>
+
+        <!-- LO-2024-441 — selecionada -->
+        <button class="lic-item on" style="border-left-color:#b91c1c;">
+          <div class="lic-item-top">
+            <span class="lic-num">LO-2024-441</span>
+            <span class="lic-score" style="color:#b91c1c;">89%</span>
+          </div>
+          <div class="lic-meta">Licença de Operação · CETESB</div>
+          <div class="lic-meta">Guarulhos · Vencida</div>
+        </button>
+
+        <button class="lic-item" style="border-left-color:transparent;">
+          <div class="lic-item-top">
+            <span class="lic-num">LP-2023-118</span>
+            <span class="lic-score" style="color:#b91c1c;">72%</span>
+          </div>
+          <div class="lic-meta">Licença Prévia · CETESB</div>
+          <div class="lic-meta">Campinas · Vencida</div>
+        </button>
+
+        <button class="lic-item" style="border-left-color:transparent;">
+          <div class="lic-item-top">
+            <span class="lic-num">LI-2025-077</span>
+            <span class="lic-score" style="color:#d97706;">94%</span>
+          </div>
+          <div class="lic-meta">Licença de Instalação · CETESB</div>
+          <div class="lic-meta">São Bernardo · Vencendo</div>
+        </button>
+
+        <button class="lic-item" style="border-left-color:transparent;">
+          <div class="lic-item-top">
+            <span class="lic-num">LO-2022-302</span>
+            <span class="lic-score" style="color:#15803d;">100%</span>
+          </div>
+          <div class="lic-meta">Licença de Operação · CETESB</div>
+          <div class="lic-meta">Santo André · Em dia</div>
+        </button>
+      </div>
+
+      <!-- RIGHT: Condicionantes panel -->
+      <div class="comp-main">
+
+        <!-- Header da licença selecionada -->
+        <div class="cmp-hd">
+          <div class="cmp-hd-info">
+            <div class="cmp-title">Licença de Operação · LO-2024-441</div>
+            <div class="cmp-subtitle">CETESB · Guarulhos · Vencida em 24/04/2026</div>
+          </div>
+          <button class="btn btn-s btn-sm">Ver licença →</button>
+        </div>
+
+        <!-- Score -->
+        <div class="score-row">
+          <div>
+            <div class="score-label">Score de Conformidade</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px;">
+              <span class="score-num">89</span>
+              <span style="font-size:14px;color:var(--text3);font-weight:400;">%</span>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-size:11px;color:var(--text3);width:80px;flex-shrink:0;">Cumpridas</div>
+              <div style="flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;"><div style="height:100%;width:70%;background:var(--green-mid);border-radius:2px;"></div></div>
+              <div style="font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;width:32px;text-align:right;color:var(--green);">12</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-size:11px;color:var(--text3);width:80px;flex-shrink:0;">Sem prazo</div>
+              <div style="flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;"><div style="height:100%;width:18%;background:#d97706;border-radius:2px;"></div></div>
+              <div style="font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;width:32px;text-align:right;color:var(--amber);">3</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-size:11px;color:var(--text3);width:80px;flex-shrink:0;">Atrasadas</div>
+              <div style="flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;"><div style="height:100%;width:12%;background:var(--red);border-radius:2px;"></div></div>
+              <div style="font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;width:32px;text-align:right;color:var(--red);">2</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;">
+            <span class="badge err">2 atrasadas</span>
+            <span class="badge warn">3 sem prazo</span>
+            <span class="badge ok">12 cumpridas</span>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="fbar">
+          <select class="fs"><option>Todos os status</option><option>Atrasada</option><option>Sem prazo</option><option>Cumprida</option></select>
+          <select class="fs"><option>Criticidade</option><option>Alta</option><option>Média</option><option>Baixa</option></select>
+          <select class="fs"><option>Tipo</option><option>Monitoramento</option><option>Plano</option><option>Relatório</option></select>
+          <span class="fcount">17 condicionantes</span>
+        </div>
+
+        <!-- Group: ATRASADAS -->
+        <div class="cg">
+          <button class="cg-hd" style="background:var(--red-bg);">
+            <span class="cg-label err">Atrasadas</span>
+            <span class="cg-count err" style="margin-left:6px;">2</span>
+            <span class="cg-arrow">▾</span>
+          </button>
+          <!-- Condicionante 1 -->
+          <div class="cond-item" style="background:var(--bg2);">
+            <div class="cond-row1">
+              <div class="cond-title">C-14 · Relatório semestral de monitoramento de efluentes líquidos</div>
+              <span class="badge err nd" style="flex-shrink:0;">Atrasada</span>
+            </div>
+            <div class="cond-meta">
+              <span>Periodicidade: Semestral</span>
+              <span>Tema: Recursos Hídricos</span>
+              <span>Criticidade: Alta</span>
+            </div>
+            <div class="cond-ft">
+              <span class="cond-prazo">Prazo: 30/04/2026 · 6 dias em atraso</span>
+              <button class="btn-ev">+ Evidência</button>
+            </div>
+          </div>
+          <!-- Condicionante 2 -->
+          <div class="cond-item" style="background:var(--bg2);">
+            <div class="cond-row1">
+              <div class="cond-title">C-07 · Apresentação do Programa de Monitoramento de Emissões Atmosféricas</div>
+              <span class="badge err nd" style="flex-shrink:0;">Atrasada</span>
+            </div>
+            <div class="cond-meta">
+              <span>Periodicidade: Anual</span>
+              <span>Tema: Qualidade do Ar</span>
+              <span>Criticidade: Alta</span>
+            </div>
+            <div class="cond-ft">
+              <span class="cond-prazo">Prazo: 01/04/2026 · 35 dias em atraso</span>
+              <button class="btn-ev">+ Evidência</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group: SEM PRAZO -->
+        <div class="cg">
+          <button class="cg-hd">
+            <span class="cg-label">Sem prazo</span>
+            <span class="cg-count" style="margin-left:6px;">3</span>
+            <span class="cg-arrow">▾</span>
+          </button>
+          <div class="cond-item">
+            <div class="cond-row1">
+              <div class="cond-title">C-01 · Manter atualizados os documentos de habilitação da empresa perante o órgão ambiental</div>
+              <span class="badge neu nd" style="flex-shrink:0;">Sem prazo</span>
+            </div>
+            <div class="cond-meta"><span>Contínua</span><span>Tema: Gestão Documental</span></div>
+            <div class="cond-ft">
+              <span class="cond-prazo neu">Sem prazo estipulado</span>
+              <span class="badge ok nd">Cumprida</span>
+            </div>
+          </div>
+          <div class="cond-item">
+            <div class="cond-row1">
+              <div class="cond-title">C-02 · Implementar sistema de gestão de resíduos sólidos conforme Lei 12.305/2010</div>
+              <span class="badge neu nd" style="flex-shrink:0;">Sem prazo</span>
+            </div>
+            <div class="cond-meta"><span>Contínua</span><span>Tema: Resíduos Sólidos</span></div>
+            <div class="cond-ft">
+              <span class="cond-prazo neu">Sem prazo estipulado</span>
+              <span class="badge ok nd">Cumprida</span>
+            </div>
+          </div>
+          <div class="cond-item">
+            <div class="cond-row1">
+              <div class="cond-title">C-03 · Treinamento anual de equipe em procedimentos de emergência ambiental</div>
+              <span class="badge neu nd" style="flex-shrink:0;">Sem prazo</span>
+            </div>
+            <div class="cond-meta"><span>Anual</span><span>Tema: Capacitação</span></div>
+            <div class="cond-ft">
+              <span class="cond-prazo neu">Sem prazo estipulado</span>
+              <span class="badge warn nd">Pendente</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group: CUMPRIDAS (collapsed visual) -->
+        <div class="cg">
+          <button class="cg-hd">
+            <span class="cg-label">Cumpridas</span>
+            <span class="cg-count" style="margin-left:6px;">12</span>
+            <span class="cg-arrow">▸</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

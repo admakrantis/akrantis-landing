@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo de Lotes — Akrantis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:   #f8fafc;
+  --bg2:  #ffffff;
+  --bg3:  #f1f5f9;
+  --bg4:  #e2e8f0;
+  --border:  #e2e8f0;
+  --border2: #cbd5e1;
+  --text:  #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --green:      #639922;
+  --green-bg:   #EAF3DE;
+  --green-bd:   #bbf7d0;
+  --green-mid:  #16a34a;
+  --amber:      #EF9F27;
+  --amb-bg:     #FAEEDA;
+  --amb-bd:     #fde68a;
+  --amber-text: #854F0B;
+  --red:      #E24B4A;
+  --red-bg:   #FCEBEB;
+  --red-bd:   #fecaca;
+  --red-text: #A32D2D;
+  --blue:      #378ADD;
+  --blue-bg:   #E6F1FB;
+  --blue-bd:   #bfdbfe;
+  --text-xs:   10px;
+  --text-md:   13px;
+  --r:  4px;
+  --r2: 6px;
+  --r3: 8px;
+  --transition: 120ms ease;
+  --sb-w: 228px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow-x: hidden; }
+body { font-family: 'Geist', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 12px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button { cursor: pointer; font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sb { width: var(--sb-w); min-width: var(--sb-w); background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+.sb-top { padding: 16px 14px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sb-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.sb-mark { width: 26px; height: 26px; background: var(--text); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sb-mark span { color: var(--bg2); font-size: 9px; font-weight: 600; font-family: 'Geist Mono', monospace; letter-spacing: -.3px; }
+.sb-name { font-size: var(--text-md); font-weight: 600; color: var(--text); letter-spacing: -.4px; }
+.sb-ctx { display: flex; align-items: center; gap: 7px; padding: 7px 9px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r2); }
+.ctx-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--green-mid); }
+.ctx-name { font-size: 11.5px; font-weight: 500; color: var(--text); }
+.ctx-sub { font-size: 10px; color: var(--text3); font-family: 'Geist Mono', monospace; }
+.sb-nav { flex: 1; padding: 8px 16px 4px; overflow-y: auto; }
+.sb-nav::-webkit-scrollbar { width: 2px; }
+.sb-nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.nav-sec { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); padding: 10px 0 3px; }
+.nav-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6.5px 8px; border: none; background: none; border-radius: 0; font-size: 12px; color: var(--text2); text-align: left; transition: background var(--transition), color var(--transition); }
+.nav-btn:hover { background: var(--bg3); color: var(--text); }
+.nav-btn.on { background: var(--bg3); color: var(--text); font-weight: 500; }
+.nav-ico { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; opacity: .5; }
+.nav-btn.on .nav-ico { opacity: 1; }
+.nav-badge { margin-left: auto; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 9px; line-height: 1.5; flex-shrink: 0; }
+.nav-badge.r { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-bd); }
+.nav-badge.a { background: var(--amb-bg); color: var(--amber-text); border: 1px solid var(--amb-bd); }
+.sb-foot { padding: 11px 14px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.sb-av { width: 28px; height: 28px; border-radius: 50%; background: var(--bg4); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--text2); flex-shrink: 0; }
+.sb-fn { font-size: 11.5px; font-weight: 500; color: var(--text); }
+.sb-fr { font-size: 10px; color: var(--text3); }
+.theme-toggle { margin-left: auto; width: 28px; height: 28px; border-radius: var(--r2); border: 1px solid var(--border); background: none; display: flex; align-items: center; justify-content: center; color: var(--text3); cursor: pointer; }
+
+/* Main */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.topbar { height: 50px; min-height: 50px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 14px; flex-shrink: 0; }
+.topbar-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; letter-spacing: -.02em; }
+.page-wrap { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.pg { padding: 22px 24px 48px; }
+
+/* Badge */
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; white-space: nowrap; border: 1px solid; }
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge.ok::before   { background: var(--green-mid); }
+.badge.ok   { background: var(--green-bg); color: var(--green);  border-color: var(--green-bd); }
+.badge.warn { background: var(--amb-bg);  color: var(--amber);  border-color: var(--amb-bd); }
+.badge.warn::before { background: #d97706; }
+.badge.err  { background: var(--red-bg);  color: var(--red);    border-color: var(--red-bd); }
+.badge.err::before  { background: var(--red); }
+.badge.nd::before   { display: none; }
+
+/* Button */
+.btn { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border-radius: var(--r2); font-size: 12.5px; font-weight: 500; border: none; transition: all var(--transition); white-space: nowrap; cursor: pointer; font-family: inherit; }
+.btn-sm { height: 28px; padding: 0 9px; font-size: 11.5px; }
+.btn-p { background: var(--text); color: var(--bg2); }
+.btn-p:hover { opacity: .85; }
+.btn-s { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+
+/* Filter bar */
+.fbar { display: flex; gap: 7px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.fi { height: 32px; padding: 0 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); color: var(--text); font-size: 12.5px; outline: none; font-family: inherit; }
+.fi::placeholder { color: var(--text3); }
+
+/* Lote card */
+.lote-list { display: flex; flex-direction: column; gap: 9px; }
+.lote-card { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--border2); border-radius: var(--r3); padding: 14px 16px; cursor: pointer; transition: border-color var(--transition); }
+.lote-card:hover { border-color: var(--border2); }
+.lote-card.err  { border-left-color: var(--red); }
+.lote-card.ok   { border-left-color: var(--green-mid); }
+.lote-card.warn { border-left-color: #d97706; }
+.lote-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 7px; }
+.lote-num  { font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text3); }
+.lote-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.lote-meta { display: flex; gap: 12px; font-size: 11.5px; color: var(--text3); flex-wrap: wrap; }
+
+/* Stepper */
+.stepper { display: flex; align-items: center; overflow-x: auto; padding-bottom: 2px; margin-top: 12px; }
+.step { display: flex; flex-direction: column; align-items: center; min-width: 60px; flex: 1; position: relative; }
+.step::before { content: ''; position: absolute; top: 9px; left: -50%; width: 100%; height: 1px; background: var(--border); z-index: 0; }
+.step:first-child::before { display: none; }
+.step-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--bg2); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 600; color: var(--text3); z-index: 1; flex-shrink: 0; position: relative; }
+.step.done   .step-dot { background: var(--green-mid); border-color: var(--green-mid); color: #fff; font-size: 9px; }
+.step.active .step-dot { background: var(--text); border-color: var(--text); color: var(--bg2); }
+.step.block  .step-dot { background: var(--red-bg); border-color: var(--red-bd); color: var(--red); }
+.step-lbl { font-size: 9.5px; color: var(--text3); margin-top: 3px; white-space: nowrap; }
+.step.done   .step-lbl { color: var(--text2); }
+.step.active .step-lbl { color: var(--text); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sb">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <div class="sb-mark"><span>AK</span></div>
+        <span class="sb-name">Akrantis</span>
+      </div>
+      <div class="sb-ctx">
+        <div class="ctx-dot"></div>
+        <div>
+          <div class="ctx-name">Grupo Industrial Akrantis</div>
+          <div class="ctx-sub">4 unidades</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">Situação Atual</div>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+        Dashboard <span class="nav-badge r">4</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+        Pendências <span class="nav-badge r">9</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        Pendentes Fiscais
+      </button>
+      <div class="nav-sec">Entidades</div>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+        Unidades
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+        Parceiros
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+        Licenças
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        Compliance
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        Relatórios Obrigatórios
+      </button>
+      <div class="nav-sec">Operação</div>
+      <button class="nav-btn on">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+        Fluxo de Lotes <span class="nav-badge r">2</span>
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+        Ingestão
+      </button>
+      <div class="nav-sec">Saídas</div>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></span>
+        Certificados
+      </button>
+      <button class="nav-btn">
+        <span class="nav-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+        Exportações
+      </button>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-av">GI</div>
+      <div>
+        <div class="sb-fn">Gestão Akrantis</div>
+        <div class="sb-fr">Administrador</div>
+      </div>
+      <button class="theme-toggle">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Fluxo de Lotes</span>
+      <button class="btn btn-p btn-sm">+ Novo Lote</button>
+    </div>
+    <div class="page-wrap">
+      <div class="pg">
+
+        <!-- Filter bar -->
+        <div class="fbar">
+          <input class="fi" placeholder="Buscar lote ou resíduo..." style="width:220px;">
+          <select class="fi" style="padding-right:28px; background-image:url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 9px center; -webkit-appearance:none; cursor:pointer; color:var(--text2);">
+            <option>Todas as unidades</option>
+          </select>
+          <select class="fi" style="padding-right:28px; background-image:url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 9px center; -webkit-appearance:none; cursor:pointer; color:var(--text2);">
+            <option>Todos os status</option>
+          </select>
+          <span style="font-size:11px; color:var(--text3); margin-left:auto; font-family:'Geist Mono',monospace;">2 lotes</span>
+        </div>
+
+        <!-- Lote list -->
+        <div class="lote-list">
+
+          <!-- "Requer atenção" label -->
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--red); margin-bottom:8px; margin-top:4px; display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:var(--red-bg); border:1px solid var(--red-bd); font-size:9px; font-weight:700; color:var(--red); flex-shrink:0;">2</span>
+            Requer atenção
+          </div>
+
+          <!-- L-2026-0006 -->
+          <div class="lote-card err">
+            <div class="lote-header">
+              <span class="lote-num">L-2026-0006</span>
+              <span class="lote-name">Óleo Lubrificante Usado</span>
+              <span class="badge err nd">Bloqueado</span>
+              <span class="badge err nd">5 pendências</span>
+            </div>
+            <div class="lote-meta">
+              <span>⌂ Guarulhos</span>
+              <span>⛟ Transportadora Verde Logística</span>
+              <span>◆ Recicla Sul Tratamentos</span>
+              <span style="margin-left:auto;">MTR 28/04/2026</span>
+            </div>
+            <div class="stepper">
+              <div class="step done"><div class="step-dot">✓</div><div class="step-lbl">MTR</div></div>
+              <div class="step done"><div class="step-dot">✓</div><div class="step-lbl">Transporte</div></div>
+              <div class="step block"><div class="step-dot">!</div><div class="step-lbl">CDF</div></div>
+              <div class="step"><div class="step-dot">4</div><div class="step-lbl">Encerrado</div></div>
+            </div>
+          </div>
+
+          <!-- L-2026-0005 -->
+          <div class="lote-card err">
+            <div class="lote-header">
+              <span class="lote-num">L-2026-0005</span>
+              <span class="lote-name">Óleo Industrial Residual</span>
+              <span class="badge err nd">Bloqueado</span>
+              <span class="badge err nd">4 pendências</span>
+            </div>
+            <div class="lote-meta">
+              <span>⌂ Campinas</span>
+              <span>⛟ Transportadora Verde Logística</span>
+              <span>◆ Recicla Sul Tratamentos</span>
+              <span style="margin-left:auto;">MTR 22/04/2026</span>
+            </div>
+            <div class="stepper">
+              <div class="step done"><div class="step-dot">✓</div><div class="step-lbl">MTR</div></div>
+              <div class="step done"><div class="step-dot">✓</div><div class="step-lbl">Transporte</div></div>
+              <div class="step block"><div class="step-dot">!</div><div class="step-lbl">CDF</div></div>
+              <div class="step"><div class="step-dot">4</div><div class="step-lbl">Encerrado</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
