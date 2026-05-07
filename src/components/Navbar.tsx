@@ -28,7 +28,7 @@ export function Navbar({ onOpenModal }: NavbarProps) {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <img src={LOGO_SRC} alt="Akrantis" style={{ height: '40px', width: 'auto', display: 'block' }} />
+        <img src={LOGO_SRC} alt="Akrantis" style={{ height: '40px', width: 'auto', display: 'block', filter: 'brightness(0) saturate(100%)' }} />
 
         <button
           onClick={onOpenModal}
