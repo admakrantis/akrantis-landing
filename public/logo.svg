@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 40" fill="none">
+  <!-- Plant icon -->
+  <g>
+    <!-- Left leaf -->
+    <path d="M18 17C18 17 13 10 6 12C6 12 7.5 19 18 19Z" fill="#16a34a"/>
+    <!-- Right leaf -->
+    <path d="M18 17C18 17 23 10 30 12C30 12 28.5 19 18 19Z" fill="#16a34a"/>
+    <!-- Stem -->
+    <line x1="18" y1="17" x2="18" y2="32" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Root left -->
+    <path d="M18 29C15 31 10 33 7 36" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Root right -->
+    <path d="M18 29C21 31 26 33 29 36" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Root center -->
+    <line x1="18" y1="32" x2="18" y2="37" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <!-- Wordmark -->
+  <text
+    x="38"
+    y="30"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+    font-size="22"
+    font-weight="700"
+    fill="#0f172a"
+    letter-spacing="-0.5"
+  >akrantis</text>
+</svg>
