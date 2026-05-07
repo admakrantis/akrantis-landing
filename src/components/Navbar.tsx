@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface NavbarProps {
@@ -26,19 +27,23 @@ export function Navbar({ onOpenModal }: NavbarProps) {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <span
-          className="text-[15px] text-slate-950"
-          style={{ fontWeight: 600, letterSpacing: "-0.01em" }}
-        >
-          Akrantis
-        </span>
+        <div style={{ background: "#0f172a", borderRadius: "8px", padding: "5px 10px" }}>
+          <Image
+            src="/logo.png"
+            alt="Akrantis"
+            height={32}
+            width={130}
+            style={{ objectFit: "contain", display: "block" }}
+            priority
+          />
+        </div>
 
         <button
           onClick={onOpenModal}
           className="text-sm text-white px-4 py-1.5 font-medium transition-colors active:opacity-80"
-          style={{ backgroundColor: "#520fa4", borderRadius: "6px" }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
+          style={{ backgroundColor: "#0f172a", borderRadius: "6px" }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
         >
           Agendar demonstração
         </button>

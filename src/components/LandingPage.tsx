@@ -157,8 +157,14 @@ export function LandingPage() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 mb-8">
               <span
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-600"
-                style={{ fontSize: "12px", fontWeight: 500 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  backgroundColor: "#f1f5f9",
+                  color: "#475569",
+                  border: "1px solid #e2e8f0",
+                }}
               >
                 <span style={{ color: "#16a34a", fontSize: "8px" }}>●</span>
                 Infraestrutura de compliance ambiental
@@ -204,13 +210,13 @@ export function LandingPage() {
                 onClick={() => setModalOpen(true)}
                 className="text-white font-medium transition-colors active:opacity-80"
                 style={{
-                  backgroundColor: "#520fa4",
+                  backgroundColor: "#0f172a",
                   padding: "11px 24px",
                   borderRadius: 6,
                   fontSize: "0.9375rem",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
               >
                 Ver demonstração →
               </button>
@@ -232,8 +238,13 @@ export function LandingPage() {
               {STATUS_PILLS.map((pill) => (
                 <span
                   key={pill.label}
-                  className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-full px-3 py-1 text-slate-500"
-                  style={{ fontSize: "11px" }}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1"
+                  style={{
+                    fontSize: "11px",
+                    backgroundColor: "#f1f5f9",
+                    color: "#475569",
+                    border: "1px solid #e2e8f0",
+                  }}
                 >
                   <span style={{ color: pill.dotColor, fontSize: "9px" }}>
                     {pill.symbol}
@@ -301,7 +312,7 @@ export function LandingPage() {
                     style={{
                       fontSize: 56,
                       fontWeight: 800,
-                      color: "#520fa4",
+                      color: "#0f172a",
                       letterSpacing: "-0.03em",
                       lineHeight: 1,
                     }}
@@ -361,18 +372,18 @@ export function LandingPage() {
             >
               <p>
                 Ela compromete auditorias, paralisa operações e pode transferir{" "}
-                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
+                <em className="not-italic font-medium" style={{ color: "#94a3b8" }}>
                   responsabilidade ambiental
                 </em>{" "}
                 para o gerador.
               </p>
               <p>
                 Parceiro sem licença vigente vira{" "}
-                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
+                <em className="not-italic font-medium" style={{ color: "#94a3b8" }}>
                   risco compartilhado
                 </em>
                 . CDF ausente vira passivo. Auditoria ESG reprovada pode custar{" "}
-                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
+                <em className="not-italic font-medium" style={{ color: "#94a3b8" }}>
                   contratos inteiros
                 </em>
                 .
@@ -406,7 +417,7 @@ export function LandingPage() {
                     fontWeight: 500,
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    color: "#520fa4",
+                    color: "#64748b",
                     marginBottom: 16,
                   }}
                 >
@@ -494,7 +505,7 @@ export function LandingPage() {
                       alignItems: "flex-start",
                     }}
                   >
-                    <Icon size={20} color="#520fa4" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <Icon size={20} color="#64748b" style={{ flexShrink: 0, marginTop: 2 }} />
                     <div>
                       <p
                         style={{
@@ -542,13 +553,13 @@ export function LandingPage() {
               onClick={() => setModalOpen(true)}
               className="text-white font-semibold transition-colors active:opacity-80"
               style={{
-                backgroundColor: "#520fa4",
+                backgroundColor: "#0f172a",
                 padding: "14px 32px",
                 borderRadius: 6,
                 fontSize: "0.9375rem",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
             >
               Agendar demonstração →
             </button>
