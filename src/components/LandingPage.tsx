@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ShieldCheck, Truck, Recycle } from "lucide-react";
 import { Navbar } from "./Navbar";
 import { InfiniteGrid } from "./InfiniteGrid";
 import { DemoModal } from "./DemoModal";
@@ -201,13 +202,15 @@ export function LandingPage() {
             <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
               <button
                 onClick={() => setModalOpen(true)}
-                className="text-white font-medium transition-opacity hover:opacity-90 active:opacity-80"
+                className="text-white font-medium transition-colors active:opacity-80"
                 style={{
-                  backgroundColor: "#166534",
+                  backgroundColor: "#520fa4",
                   padding: "11px 24px",
                   borderRadius: 6,
                   fontSize: "0.9375rem",
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
               >
                 Ver demonstração →
               </button>
@@ -252,59 +255,83 @@ export function LandingPage() {
         </section>
 
         {/* ── NÚMEROS ───────────────────────────────────────────────────────── */}
-        <section className="bg-slate-50 border-t border-slate-100 py-24 px-6">
-          <FadeIn className="max-w-3xl mx-auto">
-            <div className="grid grid-cols-3 gap-8 text-center">
-              <div>
+        <section
+          style={{
+            backgroundColor: "#f8fafc",
+            borderTop: "1px solid #e2e8f0",
+            borderBottom: "1px solid #e2e8f0",
+            padding: "100px 24px",
+          }}
+        >
+          <FadeIn>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                maxWidth: 960,
+                margin: "0 auto",
+              }}
+            >
+              {[
+                {
+                  target: 47,
+                  unit: "tipos de condicionantes",
+                  label: "mapeadas e classificadas por criticidade e prazo",
+                },
+                {
+                  target: 8,
+                  unit: "estados integrados",
+                  label: "SP, RJ, MG, RS, SC, PR, ES, GO + SINIR federal",
+                },
+                {
+                  target: 3,
+                  unit: "documentos por lote",
+                  label: "MTR, NF-e e CDF vinculados e cruzados automaticamente",
+                },
+              ].map((item, i) => (
                 <div
-                  className="text-slate-900 mb-2"
+                  key={i}
                   style={{
-                    fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.03em",
-                    lineHeight: 1,
+                    padding: "0 40px",
+                    textAlign: "center",
+                    borderRight: i < 2 ? "1px solid #e2e8f0" : undefined,
                   }}
                 >
-                  <AnimatedCounter target={100} suffix="%" />
+                  <div
+                    style={{
+                      fontSize: 56,
+                      fontWeight: 800,
+                      color: "#520fa4",
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1,
+                    }}
+                  >
+                    <AnimatedCounter target={item.target} />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 600,
+                      color: "#020617",
+                      marginTop: 4,
+                    }}
+                  >
+                    {item.unit}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "#64748b",
+                      marginTop: 8,
+                      maxWidth: 200,
+                      margin: "8px auto 0",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {item.label}
+                  </div>
                 </div>
-                <div className="text-slate-500" style={{ fontSize: "0.8125rem" }}>
-                  Licenças monitoradas
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="text-slate-900 mb-2"
-                  style={{
-                    fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.03em",
-                    lineHeight: 1,
-                  }}
-                >
-                  <AnimatedCounter target={0} />
-                </div>
-                <div className="text-slate-500" style={{ fontSize: "0.8125rem" }}>
-                  Surpresas na auditoria
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="text-slate-900 mb-2"
-                  style={{
-                    fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.03em",
-                    lineHeight: 1,
-                  }}
-                >
-                  <AnimatedCounter target={360} suffix="°" />
-                </div>
-                <div className="text-slate-500" style={{ fontSize: "0.8125rem" }}>
-                  Visão da cadeia
-                </div>
-              </div>
+              ))}
             </div>
           </FadeIn>
         </section>
@@ -334,18 +361,18 @@ export function LandingPage() {
             >
               <p>
                 Ela compromete auditorias, paralisa operações e pode transferir{" "}
-                <em className="not-italic font-medium" style={{ color: "#86efac" }}>
+                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
                   responsabilidade ambiental
                 </em>{" "}
                 para o gerador.
               </p>
               <p>
                 Parceiro sem licença vigente vira{" "}
-                <em className="not-italic font-medium" style={{ color: "#86efac" }}>
+                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
                   risco compartilhado
                 </em>
                 . CDF ausente vira passivo. Auditoria ESG reprovada pode custar{" "}
-                <em className="not-italic font-medium" style={{ color: "#86efac" }}>
+                <em className="not-italic font-medium" style={{ color: "#c4b5fd" }}>
                   contratos inteiros
                 </em>
                 .
@@ -359,17 +386,134 @@ export function LandingPage() {
         </section>
 
         {/* ── CREDIBILIDADE ─────────────────────────────────────────────────── */}
-        <section className="bg-slate-50 py-24 px-6">
-          <FadeIn className="max-w-xl mx-auto text-center">
-            <p
-              className="text-slate-600"
-              style={{ fontSize: "1.0625rem", lineHeight: 1.85 }}
+        <section style={{ backgroundColor: "#ffffff", padding: "100px 24px" }}>
+          <FadeIn>
+            <div
+              style={{
+                maxWidth: 1000,
+                margin: "0 auto",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 80,
+                alignItems: "center",
+              }}
             >
-              Akrantis foi construída de dentro da operação, não de fora dela.
-              Cada fluxo, cada campo, cada alerta foi desenhado por quem conhece
-              o que acontece quando a licença vence, o parceiro não tem aptidão
-              e a auditoria chega.
-            </p>
+              {/* Coluna esquerda */}
+              <div>
+                <p
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "#520fa4",
+                    marginBottom: 16,
+                  }}
+                >
+                  Por que existe
+                </p>
+                <h2
+                  style={{
+                    fontSize: 36,
+                    fontWeight: 700,
+                    color: "#020617",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Construído de dentro, não de fora.
+                </h2>
+                <p
+                  style={{
+                    marginTop: 20,
+                    fontSize: 18,
+                    color: "#475569",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  A maioria dos sistemas de compliance ambiental foi construída por
+                  desenvolvedores que nunca viram uma licença de operação, nunca
+                  receberam uma auditoria e nunca precisaram provar a destinação de
+                  um resíduo Classe I.
+                </p>
+                <p
+                  style={{
+                    marginTop: 16,
+                    fontSize: 18,
+                    color: "#475569",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  Akrantis foi construída por quem operou nos três lados da cadeia
+                  — como gerador, como transportador e como destinador. Cada campo
+                  existe porque já causou problema real quando estava faltando. Cada
+                  alerta existe porque alguém já foi pego de surpresa sem ele.
+                </p>
+                <p
+                  style={{
+                    marginTop: 16,
+                    fontSize: 18,
+                    color: "#475569",
+                    lineHeight: 1.7,
+                    fontStyle: "italic",
+                  }}
+                >
+                  O resultado é um sistema que não precisa de treinamento para fazer
+                  sentido — porque replica a lógica de quem já vive essa operação.
+                </p>
+              </div>
+
+              {/* Coluna direita — 3 cards */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {[
+                  {
+                    Icon: ShieldCheck,
+                    title: "Gerador",
+                    text: "Conhecimento de quem precisa provar destinação correta para auditorias e renovação de licença.",
+                  },
+                  {
+                    Icon: Truck,
+                    title: "Transportador",
+                    text: "Experiência de quem emite MTR, coordena rotas e responde solidariamente pelo resíduo em trânsito.",
+                  },
+                  {
+                    Icon: Recycle,
+                    title: "Destinador",
+                    text: "Visão de quem recebe, processa e emite CDF — e sabe o que acontece quando o documento chega errado.",
+                  },
+                ].map(({ Icon, title, text }) => (
+                  <div
+                    key={title}
+                    style={{
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: 12,
+                      padding: "20px 24px",
+                      display: "flex",
+                      gap: 16,
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Icon size={20} color="#520fa4" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <div>
+                      <p
+                        style={{
+                          fontSize: 15,
+                          fontWeight: 600,
+                          color: "#020617",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {title}
+                      </p>
+                      <p style={{ fontSize: 14, color: "#64748b", lineHeight: 1.6 }}>
+                        {text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </FadeIn>
         </section>
 
@@ -396,13 +540,15 @@ export function LandingPage() {
 
             <button
               onClick={() => setModalOpen(true)}
-              className="text-white font-semibold transition-opacity hover:opacity-90 active:opacity-80"
+              className="text-white font-semibold transition-colors active:opacity-80"
               style={{
-                backgroundColor: "#166534",
+                backgroundColor: "#520fa4",
                 padding: "14px 32px",
                 borderRadius: 6,
                 fontSize: "0.9375rem",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
             >
               Agendar demonstração →
             </button>

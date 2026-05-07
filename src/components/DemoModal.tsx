@@ -154,8 +154,10 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
 
                       <button
                         type="submit"
-                        className="w-full py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 active:opacity-80 mt-2"
-                        style={{ backgroundColor: "#166534", borderRadius: 6 }}
+                        className="w-full py-2.5 text-sm font-medium text-white transition-colors active:opacity-80 mt-2"
+                        style={{ backgroundColor: "#520fa4", borderRadius: 6 }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
                       >
                         Enviar solicitação
                       </button>

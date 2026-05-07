@@ -35,8 +35,10 @@ export function Navbar({ onOpenModal }: NavbarProps) {
 
         <button
           onClick={onOpenModal}
-          className="text-sm text-white px-4 py-1.5 font-medium transition-opacity hover:opacity-90 active:opacity-80"
-          style={{ backgroundColor: "#166534", borderRadius: "6px" }}
+          className="text-sm text-white px-4 py-1.5 font-medium transition-colors active:opacity-80"
+          style={{ backgroundColor: "#520fa4", borderRadius: "6px" }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3d0a7a")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#520fa4")}
         >
           Agendar demonstração
         </button>
