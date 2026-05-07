@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     }
 
     await resend.emails.send({
-      from: "Akrantis <onboarding@resend.dev>",
+      from: "Akrantis <contato@akrantis.com>",
       to: "contato@akrantis.com.br",
       replyTo: email,
       subject: `Nova solicitação de demonstração — ${empresa}`,
