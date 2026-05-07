@@ -114,48 +114,25 @@ function MockupFrame({ src }: { src: string }) {
 
 // ─── Product block ────────────────────────────────────────────────────────────
 function ProductBlock({ title, body, mockupSrc, reversed }: ProductBlock) {
-  const textCol = (
-    <div className="flex flex-col justify-center" style={{ maxWidth: 420 }}>
-      <h3
-        className="text-slate-900 mb-4"
-        style={{
-          fontSize: "1.5rem",
-          fontWeight: 700,
-          letterSpacing: "-0.025em",
-          lineHeight: 1.2,
-        }}
-      >
-        {title}
-      </h3>
-      <p className="text-slate-500" style={{ fontSize: "0.9375rem", lineHeight: 1.75 }}>
-        {body}
-      </p>
-    </div>
-  );
-
-  const mockupCol = (
-    <div className="flex-1 min-w-0">
-      <MockupFrame src={mockupSrc} />
-    </div>
-  );
-
   return (
     <FadeIn>
-      <div
-        className="flex flex-col md:flex-row items-center gap-12 lg:gap-16"
-        style={{ flexDirection: reversed ? undefined : undefined }}
-      >
-        {reversed ? (
-          <>
-            {mockupCol}
-            {textCol}
-          </>
-        ) : (
-          <>
-            {textCol}
-            {mockupCol}
-          </>
-        )}
+      <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12 lg:gap-16">
+
+        {/* Texto — sempre primeiro em mobile */}
+        <div className={`flex flex-col justify-center w-full md:max-w-[420px] ${reversed ? "md:order-2" : "md:order-1"}`}>
+          <h3 style={{ fontSize: "clamp(1.25rem, 3vw, 1.5rem)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: "1rem", color: "#0f172a" }}>
+            {title}
+          </h3>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "#64748b" }}>
+            {body}
+          </p>
+        </div>
+
+        {/* Mockup — sempre segundo em mobile */}
+        <div className={`w-full md:flex-1 md:min-w-0 ${reversed ? "md:order-1" : "md:order-2"}`}>
+          <MockupFrame src={mockupSrc} />
+        </div>
+
       </div>
     </FadeIn>
   );
