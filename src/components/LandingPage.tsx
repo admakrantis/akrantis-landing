@@ -6,7 +6,6 @@ import { Navbar } from "./Navbar";
 import { InfiniteGrid } from "./InfiniteGrid";
 import { DemoModal } from "./DemoModal";
 import { FadeIn } from "./FadeIn";
-import { AnimatedCounter } from "./AnimatedCounter";
 
 // ─── Mockup iframe shadow (Stripe-style) ────────────────────────────────────
 const MOCKUP_SHADOW =
@@ -285,19 +284,19 @@ export function LandingPage() {
             >
               {[
                 {
-                  target: 47,
-                  unit: "tipos de condicionantes",
-                  label: "mapeadas e classificadas por criticidade e prazo",
+                  highlight: "MTR → CDF",
+                  unit: "rastreabilidade ponta a ponta",
+                  label: "do manifesto ao certificado de destinação em um fluxo único",
                 },
                 {
-                  target: 8,
-                  unit: "estados integrados",
-                  label: "SP, RJ, MG, RS, SC, PR, ES, GO + SINIR federal",
+                  highlight: "SINIR",
+                  unit: "cobertura nacional",
+                  label: "integração com o sistema federal de resíduos sólidos",
                 },
                 {
-                  target: 3,
-                  unit: "documentos por lote",
-                  label: "MTR, NF-e e CDF vinculados e cruzados automaticamente",
+                  highlight: "I · II-A · II-B",
+                  unit: "classes NBR 10004",
+                  label: "resíduos perigosos e não perigosos monitorados por classe",
                 },
               ].map((item, i) => (
                 <div
@@ -310,14 +309,14 @@ export function LandingPage() {
                 >
                   <div
                     style={{
-                      fontSize: 56,
+                      fontSize: 40,
                       fontWeight: 800,
                       color: "#0f172a",
-                      letterSpacing: "-0.03em",
+                      letterSpacing: "-0.02em",
                       lineHeight: 1,
                     }}
                   >
-                    <AnimatedCounter target={item.target} />
+                    {item.highlight}
                   </div>
                   <div
                     style={{
