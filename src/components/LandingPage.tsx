@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ShieldCheck, Truck, Recycle } from "lucide-react";
 import { Navbar } from "./Navbar";
 import { InfiniteGrid } from "./InfiniteGrid";
@@ -53,13 +53,38 @@ const STATUS_PILLS = [
   { symbol: "✓", label: "Parceiro apto", dotColor: "#64748b" },
 ] as const;
 
+// ─── Mockup scale constants ───────────────────────────────────────────────────
+// Mockups designed at 900px wide (228px sidebar + ~672px content)
+const MOCKUP_DESIGN_WIDTH = 900;
+const MOCKUP_DESIGN_HEIGHT = Math.round(MOCKUP_DESIGN_WIDTH * (10 / 16)); // 562px
+
 // ─── Mockup container ─────────────────────────────────────────────────────────
 function MockupFrame({ src }: { src: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setContainerWidth(entry.contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const scale = containerWidth > 0 ? containerWidth / MOCKUP_DESIGN_WIDTH : 1;
+  const containerHeight = containerWidth > 0
+    ? Math.round(MOCKUP_DESIGN_HEIGHT * scale)
+    : undefined;
+
   return (
     <div
+      ref={containerRef}
       style={{
         width: "100%",
-        height: 400,
+        height: containerHeight,
+        aspectRatio: containerHeight == null ? "16/10" : undefined,
         borderRadius: 8,
         overflow: "hidden",
         border: "1px solid #e5edf5",
@@ -70,11 +95,13 @@ function MockupFrame({ src }: { src: string }) {
       <iframe
         src={src}
         style={{
-          width: "100%",
-          height: "100%",
+          width: MOCKUP_DESIGN_WIDTH,
+          height: MOCKUP_DESIGN_HEIGHT,
           border: "none",
           display: "block",
           pointerEvents: "none",
+          transform: `scale(${scale})`,
+          transformOrigin: "top left",
         }}
         scrolling="no"
         tabIndex={-1}
