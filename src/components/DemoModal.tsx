@@ -15,17 +15,19 @@ interface FormState {
   empresa: string;
 }
 
+type Status = "idle" | "loading" | "success" | "error";
+
 const initialForm: FormState = { nome: "", email: "", empresa: "" };
 
 export function DemoModal({ isOpen, onClose }: DemoModalProps) {
-  const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>(initialForm);
+  const [status, setStatus] = useState<Status>("idle");
 
   // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
       const t = setTimeout(() => {
-        setSubmitted(false);
+        setStatus("idle");
         setForm(initialForm);
       }, 300);
       return () => clearTimeout(t);
@@ -42,9 +44,20 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("request failed");
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   };
 
   const handleFieldChange =
@@ -52,6 +65,8 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
+
+  const isLoading = status === "loading";
 
   return (
     <AnimatePresence>
@@ -95,7 +110,26 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               </button>
 
               <AnimatePresence mode="wait">
-                {!submitted ? (
+                {status === "success" ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="py-8 flex flex-col items-center text-center"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mb-4">
+                      <Check size={22} className="text-green-700" />
+                    </div>
+                    <h3 className="text-base font-semibold text-slate-900 mb-1">
+                      Solicitação recebida.
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      Recebemos sua solicitação. Entraremos em contato em breve.
+                    </p>
+                  </motion.div>
+                ) : (
                   <motion.div
                     key="form"
                     initial={{ opacity: 0 }}
@@ -143,44 +177,43 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                           <input
                             type={type}
                             required
+                            disabled={isLoading}
                             autoComplete={autoComplete}
                             value={form[field]}
                             onChange={handleFieldChange(field)}
                             placeholder={placeholder}
-                            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-md outline-none focus:border-slate-400 transition-colors placeholder:text-slate-400 text-slate-900"
+                            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-md outline-none focus:border-slate-400 transition-colors placeholder:text-slate-400 text-slate-900 disabled:opacity-60"
                           />
                         </div>
                       ))}
 
+                      {status === "error" && (
+                        <p className="text-xs text-red-600">
+                          Algo deu errado. Tente novamente ou envie email para{" "}
+                          <a
+                            href="mailto:contato@akrantis.com.br"
+                            className="underline"
+                          >
+                            contato@akrantis.com.br
+                          </a>
+                        </p>
+                      )}
+
                       <button
                         type="submit"
-                        className="w-full py-2.5 text-sm font-medium text-white transition-colors active:opacity-80 mt-2"
+                        disabled={isLoading}
+                        className="w-full py-2.5 text-sm font-medium text-white transition-colors active:opacity-80 mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
                         style={{ backgroundColor: "#0f172a", borderRadius: 6 }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
+                        onMouseEnter={(e) => {
+                          if (!isLoading) e.currentTarget.style.backgroundColor = "#1e293b";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "#0f172a";
+                        }}
                       >
-                        Enviar solicitação
+                        {isLoading ? "Enviando…" : "Enviar solicitação"}
                       </button>
                     </form>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="py-8 flex flex-col items-center text-center"
-                  >
-                    <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mb-4">
-                      <Check size={22} className="text-green-700" />
-                    </div>
-                    <h3 className="text-base font-semibold text-slate-900 mb-1">
-                      Solicitação recebida.
-                    </h3>
-                    <p className="text-sm text-slate-500">
-                      Retornaremos em até 24h.
-                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
