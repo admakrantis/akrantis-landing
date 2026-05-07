@@ -279,9 +279,8 @@ export function LandingPage() {
         >
           <FadeIn>
             <div
+              className="grid grid-cols-1 md:grid-cols-3"
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
                 maxWidth: 960,
                 margin: "0 auto",
               }}
@@ -403,12 +402,10 @@ export function LandingPage() {
         <section style={{ backgroundColor: "#ffffff", padding: "100px 24px" }}>
           <FadeIn>
             <div
+              className="grid grid-cols-1 md:grid-cols-2 gap-12"
               style={{
                 maxWidth: 1000,
                 margin: "0 auto",
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 80,
                 alignItems: "center",
               }}
             >
@@ -569,9 +566,6 @@ export function LandingPage() {
 
             <p className="mt-6 text-slate-400" style={{ fontSize: "0.8125rem" }}>
               Demonstração aplicada à realidade da sua operação.
-            </p>
-            <p className="mt-1 text-slate-400" style={{ fontSize: "0.75rem" }}>
-              Sem apresentação genérica. Sem compromisso.
             </p>
           </FadeIn>
         </section>
