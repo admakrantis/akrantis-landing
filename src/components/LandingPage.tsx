@@ -7,7 +7,7 @@ import { InfiniteGrid } from "./InfiniteGrid";
 import { DemoModal } from "./DemoModal";
 import { FadeIn } from "./FadeIn";
 import { CookieBanner } from "./CookieBanner";
-import { HeroDashboardMockup } from "./HeroDashboardMockup";
+import { UnidadesMockup } from "./UnidadesMockup";
 
 // ─── Mockup iframe shadow (Stripe-style) ────────────────────────────────────
 const MOCKUP_SHADOW =
@@ -269,7 +269,7 @@ export function LandingPage() {
               className="hidden lg:block flex-1 min-w-0"
               style={{ overflow: "hidden", maxHeight: "68vh" }}
             >
-              <HeroDashboardMockup />
+              <UnidadesMockup />
             </div>
 
           </div>
