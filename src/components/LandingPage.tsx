@@ -7,6 +7,7 @@ import { InfiniteGrid } from "./InfiniteGrid";
 import { DemoModal } from "./DemoModal";
 import { FadeIn } from "./FadeIn";
 import { CookieBanner } from "./CookieBanner";
+import { HeroDashboardMockup } from "./HeroDashboardMockup";
 
 // ─── Mockup iframe shadow (Stripe-style) ────────────────────────────────────
 const MOCKUP_SHADOW =
@@ -158,106 +159,119 @@ export function LandingPage() {
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 overflow-hidden bg-white">
           <InfiniteGrid />
 
-          <div className="relative z-10 text-center max-w-3xl mx-auto">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 mb-8">
-              <span
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  backgroundColor: "#f1f5f9",
-                  color: "#475569",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <span style={{ color: "#16a34a", fontSize: "8px" }}>●</span>
-                Infraestrutura de compliance ambiental
-              </span>
-            </div>
+          <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-16 py-16">
 
-            {/* H1 + H2 */}
-            <h1
-              style={{
-                fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.03em",
-                marginBottom: "1.25rem",
-              }}
-            >
-              <span className="text-slate-950 block">
-                Sua licença ambiental vence.
-              </span>
-              <span className="text-slate-400 block mt-1">
-                Você vai saber antes da fiscalização ou depois?
-              </span>
-            </h1>
-
-            {/* Subtitle */}
-            <p
-              className="text-slate-500 mx-auto mb-3"
-              style={{ fontSize: "1.0625rem", lineHeight: 1.7, maxWidth: 560 }}
-            >
-              Akrantis centraliza licenças, condicionantes, parceiros, MTRs e
-              certificados em uma única infraestrutura de rastreabilidade
-              ambiental.
-            </p>
-
-            {/* Reinforcement */}
-            <p className="text-slate-400 mb-10" style={{ fontSize: "0.875rem" }}>
-              Sem planilha. Sem documento perdido. Sem surpresa na auditoria.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-              <button
-                onClick={() => setModalOpen(true)}
-                className="text-white font-medium transition-colors active:opacity-80"
-                style={{
-                  backgroundColor: "#0f172a",
-                  padding: "11px 24px",
-                  borderRadius: 6,
-                  fontSize: "0.9375rem",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
-              >
-                Ver demonstração →
-              </button>
-              <button
-                onClick={scrollToProduct}
-                className="text-slate-700 font-medium border border-slate-200 transition-colors hover:bg-slate-50 active:bg-slate-100"
-                style={{
-                  padding: "11px 24px",
-                  borderRadius: 6,
-                  fontSize: "0.9375rem",
-                }}
-              >
-                Saiba mais
-              </button>
-            </div>
-
-            {/* Status pills */}
-            <div className="flex items-center justify-center gap-2 flex-wrap">
-              {STATUS_PILLS.map((pill) => (
+            {/* ── Copy column ── */}
+            <div className="text-center lg:text-left flex-shrink-0 lg:max-w-[520px] w-full">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 mb-8">
                 <span
-                  key={pill.label}
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
                   style={{
-                    fontSize: "11px",
+                    fontSize: "12px",
+                    fontWeight: 500,
                     backgroundColor: "#f1f5f9",
                     color: "#475569",
                     border: "1px solid #e2e8f0",
                   }}
                 >
-                  <span style={{ color: pill.dotColor, fontSize: "9px" }}>
-                    {pill.symbol}
-                  </span>
-                  {pill.label}
+                  <span style={{ color: "#16a34a", fontSize: "8px" }}>●</span>
+                  Infraestrutura de compliance ambiental
                 </span>
-              ))}
+              </div>
+
+              {/* H1 + H2 */}
+              <h1
+                style={{
+                  fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)",
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.03em",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                <span className="text-slate-950 block">
+                  Sua licença ambiental vence.
+                </span>
+                <span className="text-slate-400 block mt-1">
+                  Você vai saber antes da fiscalização ou depois?
+                </span>
+              </h1>
+
+              {/* Subtitle */}
+              <p
+                className="text-slate-500 mb-3 mx-auto lg:mx-0"
+                style={{ fontSize: "1.0625rem", lineHeight: 1.7, maxWidth: 480 }}
+              >
+                Akrantis centraliza licenças, condicionantes, parceiros, MTRs e
+                certificados em uma única infraestrutura de rastreabilidade
+                ambiental.
+              </p>
+
+              {/* Reinforcement */}
+              <p className="text-slate-400 mb-10" style={{ fontSize: "0.875rem" }}>
+                Sem planilha. Sem documento perdido. Sem surpresa na auditoria.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex items-center justify-center lg:justify-start gap-3 mb-10 flex-wrap">
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="text-white font-medium transition-colors active:opacity-80"
+                  style={{
+                    backgroundColor: "#0f172a",
+                    padding: "11px 24px",
+                    borderRadius: 6,
+                    fontSize: "0.9375rem",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0f172a")}
+                >
+                  Ver demonstração →
+                </button>
+                <button
+                  onClick={scrollToProduct}
+                  className="text-slate-700 font-medium border border-slate-200 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                  style={{
+                    padding: "11px 24px",
+                    borderRadius: 6,
+                    fontSize: "0.9375rem",
+                  }}
+                >
+                  Saiba mais
+                </button>
+              </div>
+
+              {/* Status pills */}
+              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
+                {STATUS_PILLS.map((pill) => (
+                  <span
+                    key={pill.label}
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1"
+                    style={{
+                      fontSize: "11px",
+                      backgroundColor: "#f1f5f9",
+                      color: "#475569",
+                      border: "1px solid #e2e8f0",
+                    }}
+                  >
+                    <span style={{ color: pill.dotColor, fontSize: "9px" }}>
+                      {pill.symbol}
+                    </span>
+                    {pill.label}
+                  </span>
+                ))}
+              </div>
             </div>
+
+            {/* ── Mockup column ── */}
+            <div
+              className="hidden lg:block flex-1 min-w-0"
+              style={{ overflow: "hidden", maxHeight: "68vh" }}
+            >
+              <HeroDashboardMockup />
+            </div>
+
           </div>
         </section>
 
