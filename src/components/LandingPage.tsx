@@ -6,6 +6,7 @@ import { Navbar } from "./Navbar";
 import { InfiniteGrid } from "./InfiniteGrid";
 import { DemoModal } from "./DemoModal";
 import { FadeIn } from "./FadeIn";
+import { CookieBanner } from "./CookieBanner";
 
 // ─── Mockup iframe shadow (Stripe-style) ────────────────────────────────────
 const MOCKUP_SHADOW =
@@ -151,6 +152,7 @@ export function LandingPage() {
       <DemoModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       <Navbar onOpenModal={() => setModalOpen(true)} />
 
+      <CookieBanner />
       <main>
         {/* ── HERO ──────────────────────────────────────────────────────────── */}
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 overflow-hidden bg-white">
