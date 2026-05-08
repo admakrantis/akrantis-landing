@@ -574,6 +574,10 @@ export function LandingPage() {
         <footer className="bg-slate-950 px-6 py-10 text-center">
           <p className="text-slate-500" style={{ fontSize: "0.8125rem" }}>
             © 2026 Akrantis Infraestrutura Ambiental Ltda · CNPJ 65.493.422/0001-91
+            {" · "}
+            <a href="/termos" className="hover:text-slate-300 transition-colors underline underline-offset-2">
+              Termos de Uso
+            </a>
           </p>
           <p className="text-slate-500 mt-1.5" style={{ fontSize: "0.8125rem" }}>
             Av. Santos Dumont, 2828 · Aldeota · Fortaleza · CE · CEP 60150-162
