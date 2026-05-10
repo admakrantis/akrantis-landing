@@ -1,34 +1,3 @@
-import { ImageResponse } from "next/og";
-
-export const size = { width: 180, height: 180 };
-export const contentType = "image/png";
-
-export default function AppleIcon() {
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          width: 180,
-          height: 180,
-          background: "#0f172a",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span
-          style={{
-            color: "#ffffff",
-            fontSize: 74,
-            fontWeight: 800,
-            letterSpacing: "-4px",
-            fontFamily: "sans-serif",
-          }}
-        >
-          AK
-        </span>
-      </div>
-    ),
-    { width: 180, height: 180 },
-  );
-}
+// Arquivo desativado — apple-touch-icon servido via /public/apple-touch-icon.png.png
+// Deletar com: git rm src/app/apple-icon.tsx
+export {};
