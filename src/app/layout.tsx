@@ -27,7 +27,8 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -43,9 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <head>
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      </head>
+      <head />
       <body className="antialiased bg-white text-slate-900">
         {children}
         <Analytics />
