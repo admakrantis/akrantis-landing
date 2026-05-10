@@ -98,7 +98,7 @@ function FieldPair({ label, value, valueColor }: { label: string; value: string;
       <div style={{ fontSize: 9, fontWeight: 600, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 2 }}>
         {label}
       </div>
-      <div style={{ fontSize: 11, fontWeight: 500, color: valueColor ?? "#0f172a" }}>
+      <div style={{ fontSize: 10, fontWeight: 500, color: valueColor ?? "#0f172a" }}>
         {value}
       </div>
     </div>
@@ -116,15 +116,15 @@ function SectionLabel({ children }: { children: string }) {
 function ResumoRow({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: "1px solid #f8fafc" }}>
-      <span style={{ fontSize: 11, color: "#64748b" }}>{label}</span>
-      <span style={{ fontSize: 11, fontWeight: 600, color: valueColor ?? "#0f172a" }}>{value}</span>
+      <span style={{ fontSize: 10, color: "#64748b" }}>{label}</span>
+      <span style={{ fontSize: 10, fontWeight: 600, color: valueColor ?? "#0f172a" }}>{value}</span>
     </div>
   );
 }
 
 export function UnidadesMockup() {
   return (
-    <div style={{ width: "100%", minWidth: 760 }}>
+    <div style={{ width: "100%", minWidth: 640 }}>
       <div
         style={{
           background: "#ffffff",
@@ -163,7 +163,7 @@ export function UnidadesMockup() {
           {/* ── Sidebar ── */}
           <div
             style={{
-              width: 190,
+              width: 160,
               background: "#f8fafc",
               borderRight: "1px solid #e2e8f0",
               padding: "12px 8px",
@@ -316,7 +316,7 @@ export function UnidadesMockup() {
                 top: 0,
                 right: 0,
                 bottom: 0,
-                width: 340,
+                width: 280,
                 background: "#ffffff",
                 borderLeft: "1px solid #e5e7eb",
                 display: "flex",
@@ -327,7 +327,7 @@ export function UnidadesMockup() {
               {/* Drawer header */}
               <div style={{ padding: "12px 14px 10px", borderBottom: "1px solid #f1f5f9", flexShrink: 0 }}>
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 3 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a", letterSpacing: "-0.01em", lineHeight: 1.3, flex: 1, marginRight: 8 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", letterSpacing: "-0.01em", lineHeight: 1.3, flex: 1, marginRight: 8 }}>
                     Akrantis Indústria Guarulhos
                   </span>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -395,7 +395,7 @@ export function UnidadesMockup() {
                   <SectionLabel>Licenças desta Unidade</SectionLabel>
                   <ResumoRow label="Licenças vinculadas" value="LO-2024-441" valueColor="#dc2626" />
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0" }}>
-                    <span style={{ fontSize: 11, color: "#64748b" }}>Licença principal</span>
+                    <span style={{ fontSize: 10, color: "#64748b" }}>Licença principal</span>
                     <span style={{ fontSize: 10, fontWeight: 600, color: "#dc2626" }}>
                       LO-2024-441 — vencida
                     </span>

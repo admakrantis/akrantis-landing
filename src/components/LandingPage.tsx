@@ -159,7 +159,7 @@ export function LandingPage() {
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 overflow-hidden bg-white">
           <InfiniteGrid />
 
-          <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-16">
+          <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-16">
 
             {/* ── Copy column ── */}
             <div className="text-center lg:text-left flex-shrink-0 lg:max-w-[520px] w-full">
