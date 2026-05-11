@@ -25,6 +25,21 @@ export const metadata: Metadata = {
       "Compliance ambiental e rastreabilidade de resíduos para indústrias complexas.",
     locale: "pt_BR",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Akrantis — Infraestrutura de Rastreabilidade Ambiental",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Akrantis — Infraestrutura de Rastreabilidade Ambiental",
+    description:
+      "Compliance ambiental e rastreabilidade de resíduos para indústrias complexas.",
+    images: ["/opengraph-image"],
   },
   icons: {
     icon: "/favicon.svg",
